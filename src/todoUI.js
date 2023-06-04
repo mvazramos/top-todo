@@ -1,8 +1,56 @@
+import todoStorageAPI from "./todoStorageAPI.js"
+
 export default class todoUI{
 
     constructor(){
         this.__createNavSection()
         this.__createContentSection()
+        this.__createFormPopup()
+        this.addListeners()
+        this.renderTodos()
+    }
+
+    renderTodos(){
+        const todosContainer = document.getElementsByClassName("todo-items")[0]
+        const todos =  todoStorageAPI.getTodos();
+
+        todos.forEach(td => {
+            const todo =  this.createTodo(td.title, td.description, td.dueDate, td.priority, td.uuid);
+            todosContainer.innerHTML+=todo;
+        });
+        
+
+    }
+
+    createTodo(title, description, deadline, priority, uuid){
+
+        return `
+        <div class="todo--item" id=${uuid}>
+                    <div id="control-buttons">
+                        <button type="submit" id="edit-btn">
+                            <i class='bx bx-edit-alt'></i>
+                        </button>
+                        <button type="submit" id="delete-btn">
+                            <i class='bx bx-trash' ></i>
+                        </button>
+                        <input type="checkbox">
+                    </div>
+                    <div id="todo-content">
+                        <div id="todo-main">
+                            <div id="todo-title" contenteditable=false>${title}</div>
+                            <div id="todo-description">${description}</div>
+                        </div>
+                        <div id="todo-meta">
+                            <div id="todo-due-date">${deadline}</div>
+                            <div id="todo-priority">${priority}</div>
+                        </div>    
+                    </div>
+        </div>
+        `
+    }
+
+    newTodo(){
+
     }
 
     __createNavSection(){
@@ -16,10 +64,18 @@ export default class todoUI{
                                     <ul id="projects-list">
                                     </ul>
                                     <div id="project-input">
-                                        <button type="submit" id="btn-submit">
-                                            <i class='bx bx-folder-plus bx-sm'></i>
-                                        </button>
-                                        <input id="project-name" type="text" placeholder="Enter project">
+                                        <form action="#"> 
+                                             <button type="submit" id="btn-submit">
+                                                <i class='bx bx-folder-plus bx-sm'></i>
+                                            </button>
+                                            <input id="project-name" type="text" placeholder="Enter project" required>
+                                        </form>
+                                        <ul id='projects-list'>
+                                        <li>Acordar</li>
+                                        <li>Acordar</li>
+                                        <li>Acordar</li>
+                                        <li>Simplicidade</li>
+                                        </ul>
                                     </div>
                                 </div>
                             `
@@ -30,7 +86,7 @@ export default class todoUI{
         const content = document.getElementsByClassName("content-container")[0]
         content.innerHTML=`
             <div class="todos-add-button">
-            <button type="submit" id="add-todo">
+            <button type="button" id="add-todo">
                 <i  class='bx bx-list-plus bx-sm'></i>
             </button>
             </div>
@@ -40,53 +96,79 @@ export default class todoUI{
                 <div id="project--name-container">
                     <div id="project--name">Project Name</div>
                 </div>
-
-                <div class="todo--item">
-                    <div id="control-buttons">
-                        <button type="submit">
-                            <i class='bx bx-edit-alt'></i>
-                        </button>
-                        <input type="checkbox">
-                    </div>
-                    <div id="todo-content">
-                        <div id="todo-main">
-                            <div id="todo-title">Title</div>
-                            <div id="todo-description">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam quod impedit sunt, a voluptatem placeat reprehenderit totam nihil, voluptates blanditiis est, in suscipit! Voluptatum beatae quis ad deserunt voluptatibus unde.</div>
-                        </div>
-                        <div id="todo-meta">
-                            <div id="todo-due-date">Due Date</div>
-                            <div id="todo-priority">Priority</div>
-                        </div>    
-                    </div>
-                </div>
-
             </div>
         `
         
     }
 
-    createTodo(title, description, deadline, priority){
-
-        return `
-        <div class="todo--item">
-                    <div id="control-buttons">
-                        <button type="submit">
-                            <i class='bx bx-edit-alt'></i>
-                        </button>
-                        <input type="checkbox">
+    __createFormPopup(){
+        const content = document.getElementById("content")
+        content.innerHTML+=`
+        <div class='popup--form' id='todo--form'>
+            <form action='#'>
+                <div class='data'>
+                    <input type="text" placeholder='Todo Title...' required>
+                </div>
+                <div class='data'>
+                    <textarea name="description" id="todo-description-form" cols="45" rows="10" placeholder='Description...' required></textarea>
+                </div>
+                <div class='data'>
+                    <label>Priority: </label>
+                    <input type="radio" name='priority' value='high' checked>High
+                    <input type="radio" name='priority' value='medium'>Medium
+                    <input type="radio" name='priority' value='low'>Low
+                </div>
+                <div class='data'>
+                    <label>Due Date: </label>
+                    <input type="date" required>
+                </div>
+                <div class='form--buttons'>
+                    <div id='submit-btn'>
+                        <button type='submit'>Create Todo</button>
                     </div>
-                    <div id="todo-content">
-                        <div id="todo-main">
-                            <div id="todo-title">${title}</div>
-                            <div id="todo-description">${description}</div>
-                        </div>
-                        <div id="todo-meta">
-                            <div id="todo-due-date">${deadline}</div>
-                            <div id="todo-priority">${priority}</div>
-                        </div>    
+                    <div id='cancel-btn'>
+                        <button type='button'>Cancel</button>
                     </div>
                 </div>
+            </form>
+            </div>
         `
     }
 
+    addListeners(){
+        const cancelBtn =  document.getElementById('cancel-btn')
+
+        cancelBtn.addEventListener("click", ()=>{
+            document.getElementById("todo--form").style.display="none";
+        })
+    
+        
+        const addButton =  document.getElementById('add-todo')
+        addButton.addEventListener("click", ()=>{
+            document.getElementById("todo--form").style.display="block";
+        })
+
+        
+
+    }
 }
+
+
+{/* <div class="todo--item">
+<div id="control-buttons">
+    <button type="submit">
+        <i class='bx bx-edit-alt'></i>
+    </button>
+    <input type="checkbox">
+</div>
+<div id="todo-content">
+    <div id="todo-main">
+        <div id="todo-title">Title</div>
+        <div id="todo-description">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam quod impedit sunt, a voluptatem placeat reprehenderit totam nihil, voluptates blanditiis est, in suscipit! Voluptatum beatae quis ad deserunt voluptatibus unde.</div>
+    </div>
+    <div id="todo-meta">
+        <div id="todo-due-date">Due Date</div>
+        <div id="todo-priority">Priority</div>
+    </div>    
+</div>
+</div> */}
