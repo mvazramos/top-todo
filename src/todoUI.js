@@ -27,13 +27,17 @@ export default class todoUI{
         return `
         <div class="todo--item" id=${uuid}>
                     <div id="control-buttons">
+                        <div id="control">
                         <button type="submit" id="edit-btn">
                             <i class='bx bx-edit-alt'></i>
                         </button>
                         <button type="submit" id="delete-btn">
                             <i class='bx bx-trash' ></i>
                         </button>
-                        <input type="checkbox">
+                        </div>
+                        <div id="radio-state">
+                            <input type="checkbox">
+                        </div>
                     </div>
                     <div id="todo-content">
                         <div id="todo-main">
@@ -59,22 +63,16 @@ export default class todoUI{
                                 <div class="logo-details">
                                     <i class="bx bx-menu" id="btn"></i>
                                 </div>
-                                <div class="projects">
+                                <div class="projects active">
                                     <div id="project-tab">Projects</div>
-                                    <ul id="projects-list">
-                                    </ul>
                                     <div id="project-input">
-                                        <form action="#"> 
-                                             <button type="submit" id="btn-submit">
+                                        <form action="#" id="submit-project-form"> 
+                                             <button type="submit" id="btn-submit-project">
                                                 <i class='bx bx-folder-plus bx-sm'></i>
                                             </button>
                                             <input id="project-name" type="text" placeholder="Enter project" required>
                                         </form>
                                         <ul id='projects-list'>
-                                        <li>Acordar</li>
-                                        <li>Acordar</li>
-                                        <li>Acordar</li>
-                                        <li>Simplicidade</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -85,18 +83,21 @@ export default class todoUI{
 
         const content = document.getElementsByClassName("content-container")[0]
         content.innerHTML=`
+        <div class="subcontainer">
             <div class="todos-add-button">
-            <button type="button" id="add-todo">
-                <i  class='bx bx-list-plus bx-sm'></i>
-            </button>
+                <button type="button" id="add-todo">
+                    <i  class='bx bx-list-plus bx-sm'></i>
+                </button>
             </div>
             
             <div class="todo-items">
 
                 <div id="project--name-container">
                     <div id="project--name">Project Name</div>
+                    <button type="click"> <i class='bx bx-x'></i> </button>
                 </div>
             </div>
+        </div>
         `
         
     }
@@ -148,6 +149,23 @@ export default class todoUI{
             document.getElementById("todo--form").style.display="block";
         })
 
+        const addProject = document.getElementById('submit-project-form');
+
+        addProject.addEventListener("submit", (e)=>{
+            e.preventDefault();
+            const project = document.getElementById("project-name"); 
+            const projectsList = document.getElementById("projects-list");
+            const newProject =  document.createElement("li");
+            newProject.innerText=project.value;
+            projectsList.append(newProject);
+            project.value=""
+        })
+
+        document.querySelector(".side-bar #btn").addEventListener("click", ()=>{
+            document.querySelector(".side-bar").classList.toggle("active");
+            document.querySelector(".projects").classList.toggle("active");
+            document.querySelector(".content-container").classList.toggle("active");
+        })
         
 
     }
