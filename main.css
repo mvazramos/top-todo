@@ -13,10 +13,11 @@ html,body{
 }
 
 
+
 #content{
     display: flex;
     flex-direction: row;
-    height: 100%;
+    height: 100vh;
     width: 100%;
 }
 
@@ -35,11 +36,17 @@ html,body{
 
     padding:0.5em 0.5em 0.5em 1em;
     background-color: rgb(249, 249, 251);
-
-    overflow-y: auto;
+    
+    overflow-y: hidden;
     z-index: 99;
-    transition: all .5s ease;
+    transition: left 200ms ease-in-out;
+
+    left:-210px;
    
+}
+
+.side-bar.active{
+    left: 0px;
 }
 
 
@@ -51,8 +58,11 @@ html,body{
     height: 100%;
     width: 100%;
     padding-top: 50px;
-/*     padding: 50px 40px 0px 40px;
- */}
+}
+
+.projects.active{
+    display: none;
+}
 
 .side-bar .projects #project-tab{
     display: flex;
@@ -78,6 +88,15 @@ html,body{
 
 .side-bar .projects #project-input #project-name{
     width: 60%;
+    background-color: inherit;
+    border: none;
+    padding: 3px;
+}
+
+
+
+.side-bar .projects #project-input #project-name:focus{
+    outline: none;
 }
 
 .side-bar .projects #project-input form{
@@ -95,8 +114,9 @@ html,body{
 .side-bar .projects #projects-list li{
     border: 1px solid rgb(182, 177, 177);
     border-radius: 5px;
-    padding: 5px 10px 5px 10px;
-    min-width: 60%;
+    padding: 5px 5px 5px 15px;
+    min-width: 65%;
+    max-width: 65%;
 }
 
 .side-bar .projects #projects-list li:hover{
@@ -104,21 +124,52 @@ html,body{
     background-color: grey;
 }
 
-.side-bar .projects #project-input form #btn-submit{
+.side-bar .projects #project-input form #btn-submit-project{
     border-radius: 5px;
     background: none;
     color: none;
 }
 
+.side-bar .logo-details{
+    width: 100%;
+    height: 20px;
+    position: relative;
+}
+
+.side-bar .logo-details #btn{
+    display: block;
+    position: absolute;
+    top: 15px;
+    right:0;
+    transform: translateY(-50%);
+    font-size: 22px;
+    text-align: right;
+    cursor: pointer;
+    transition: all .5s ease;
+
+}
+
+
+
 /* Content */
 
 .content-container{
     display: flex;
-    flex-direction: row;
-    position: relative;
-    padding: 5em 1em 2em 190px;
+    flex-direction: column;
+    height: 100%;
+    justify-content: start;
     flex-grow:1;
+    padding: 5em 1em 2em 0.5em;
+    transition: right 300ms ease-in-out;
+}
 
+.subcontainer{
+    display: flex;
+    flex-direction: row;
+}
+
+.content-container.active{
+    padding-left: 190px;
 }
 
 #project--name-container{
@@ -127,6 +178,23 @@ html,body{
     width: 65%;
 }
 
+#project--name-container{
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    gap: 5px;
+}
+
+#project--name-container button{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    border: 1px dashed rgb(43, 43, 43);
+    background-color: #f69f9f;
+    border-radius: 100px;
+}
 
 #project--name{
     justify-self: start;
@@ -148,6 +216,7 @@ html,body{
 
 .todo--item{
     display: flex;
+    flex-direction: row;
     justify-content: space-between;
     gap:10px;
 
@@ -164,8 +233,22 @@ html,body{
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    margin-right: 10px;
+    width: 50px;
     order: 1;
+}
+
+.todo--item #control-buttons #control{
+    display:flex;
+    flex-direction: row;
+    justify-content: right;
+    gap: 5px;
+    width: 100%;
+}
+.todo--item #control-buttons #radio-state{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: right;
 }
 
 .todo--item #todo-content{
@@ -174,9 +257,7 @@ html,body{
     gap: 10px;
     width: 100%;
 }
-/* #todo-description:hover{
-    display:none;
-} */
+
 
 #todo-title{
     font-weight: 900;
@@ -203,32 +284,6 @@ html,body{
 
 .todos-add-button #add-todo{
     position: sticky;
-    top:70px;
-}
-
-
-
-
-/* .side-bar.open{
-    width: 250px;
-} */
-
-.side-bar .logo-details{
-    width: 100%;
-    height: 20px;
-    position: relative;
-}
-
-.side-bar .logo-details #btn{
-    position: absolute;
-    top: 50%;
-    right:0;
-    transform: translateY(-50%);
-    font-size: 22px;
-    text-align: right;
-    cursor: pointer;
-    transition: all .5s ease;
-
 }
 
 
