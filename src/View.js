@@ -187,28 +187,8 @@ export default class View{
 
             
             form.reset();
-            Model.saveTodos(new Todo(formDataObj.title, formDataObj.description, formDataObj.duedate,formDataObj.priority));
+            createTodoHandler(new Todo(formDataObj.title, formDataObj.description, formDataObj.duedate,formDataObj.priority));
             this.renderTodos();
         });
     }
 }
-
-
-{/* <div class="todo--item">
-<div id="control-buttons">
-    <button type="submit">
-        <i class='bx bx-edit-alt'></i>
-    </button>
-    <input type="checkbox">
-</div>
-<div id="todo-content">
-    <div id="todo-main">
-        <div id="todo-title">Title</div>
-        <div id="todo-description">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam quod impedit sunt, a voluptatem placeat reprehenderit totam nihil, voluptates blanditiis est, in suscipit! Voluptatum beatae quis ad deserunt voluptatibus unde.</div>
-    </div>
-    <div id="todo-meta">
-        <div id="todo-due-date">Due Date</div>
-        <div id="todo-priority">Priority</div>
-    </div>    
-</div>
-</div> */}

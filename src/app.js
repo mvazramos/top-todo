@@ -15,15 +15,15 @@ export default class App{
 
         this.View.createProjectBinder();
         this.View.createTodoBinder(this.createTodoHandler);
-        this.View.editTodoBinder(this.editTodoHandler)
-        this.View.deleteTodoBinder(this.deleteTodoHandler);
+        //this.View.editTodoBinder(this.editTodoHandler)
+        //this.View.deleteTodoBinder(this.deleteTodoHandler);
         
     }
 
 
 
-    createTodoHandler(){
-
+    createTodoHandler(todo){
+        Model.saveTodos(todo);
     }
 
     editTodoHandler(){
