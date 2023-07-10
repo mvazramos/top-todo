@@ -1,18 +1,19 @@
-import todoStorageAPI from "./todoStorageAPI.js"
-
-export default class todoUI{
+import Model from "./Model.js"
+import Todo from "./todo.js"
+export default class View{
 
     constructor(){
         this.__createNavSection()
         this.__createContentSection()
         this.__createFormPopup()
-        this.addListeners()
+        this.__addListeners()
         this.renderTodos()
     }
 
     renderTodos(){
         const todosContainer = document.getElementsByClassName("todo-items")[0]
-        const todos =  todoStorageAPI.getTodos();
+        todosContainer.innerHTML="";
+        const todos =  Model.getTodos();
 
         todos.forEach(td => {
             const todo =  this.createTodo(td.title, td.description, td.dueDate, td.priority, td.uuid);
@@ -53,9 +54,6 @@ export default class todoUI{
         `
     }
 
-    newTodo(){
-
-    }
 
     __createNavSection(){
         const content = document.getElementsByClassName("side-bar")[0]
@@ -84,12 +82,7 @@ export default class todoUI{
         const content = document.getElementsByClassName("content-container")[0]
         content.innerHTML=`
         <div class="subcontainer">
-            <div class="todos-add-button">
-                <button type="button" id="add-todo">
-                    <i  class='bx bx-list-plus bx-sm'></i>
-                </button>
-            </div>
-            
+                    
             <div class="todo-items">
 
                 <div id="project--name-container">
@@ -97,6 +90,13 @@ export default class todoUI{
                     <button type="click"> <i class='bx bx-x'></i> </button>
                 </div>
             </div>
+            
+            <div class="todos-add-button">
+                <button type="button" id="add-todo">
+                    <i  class='bx bx-list-plus bx-sm'></i>
+                </button>
+            </div>
+
         </div>
         `
         
@@ -106,9 +106,9 @@ export default class todoUI{
         const content = document.getElementById("content")
         content.innerHTML+=`
         <div class='popup--form' id='todo--form'>
-            <form action='#'>
+            <form action='#' id="todo-form">
                 <div class='data'>
-                    <input type="text" placeholder='Todo Title...' required>
+                    <input type="text" placeholder='Todo Title...' name="title" required>
                 </div>
                 <div class='data'>
                     <textarea name="description" id="todo-description-form" cols="45" rows="10" placeholder='Description...' required></textarea>
@@ -121,7 +121,7 @@ export default class todoUI{
                 </div>
                 <div class='data'>
                     <label>Due Date: </label>
-                    <input type="date" required>
+                    <input  type="date" name="duedate" required>
                 </div>
                 <div class='form--buttons'>
                     <div id='submit-btn'>
@@ -136,8 +136,8 @@ export default class todoUI{
         `
     }
 
-    addListeners(){
-        const cancelBtn =  document.getElementById('cancel-btn')
+    __addListeners(){
+        const cancelBtn =  document.getElementById('cancel-btn');
 
         cancelBtn.addEventListener("click", ()=>{
             document.getElementById("todo--form").style.display="none";
@@ -149,6 +149,15 @@ export default class todoUI{
             document.getElementById("todo--form").style.display="block";
         })
 
+
+        document.querySelector(".side-bar #btn").addEventListener("click", ()=>{
+            document.querySelector(".side-bar").classList.toggle("active");
+            document.querySelector(".projects").classList.toggle("active");
+            document.querySelector(".content-container").classList.toggle("active");
+        });
+    }
+
+    createProjectBinder(){
         const addProject = document.getElementById('submit-project-form');
 
         addProject.addEventListener("submit", (e)=>{
@@ -156,18 +165,31 @@ export default class todoUI{
             const project = document.getElementById("project-name"); 
             const projectsList = document.getElementById("projects-list");
             const newProject =  document.createElement("li");
+            
             newProject.innerText=project.value;
             projectsList.append(newProject);
-            project.value=""
-        })
+            project.value="";
 
-        document.querySelector(".side-bar #btn").addEventListener("click", ()=>{
-            document.querySelector(".side-bar").classList.toggle("active");
-            document.querySelector(".projects").classList.toggle("active");
-            document.querySelector(".content-container").classList.toggle("active");
-        })
-        
+        });
+    }
 
+    createTodoBinder(createTodoHandler){
+        let form = document.querySelector("#todo-form");
+        form.addEventListener("submit",(e)=>{
+            
+            e.preventDefault();
+            const data = new FormData(e.target);
+
+            const formDataObj = {};
+            data.forEach((value, key) => (formDataObj[key] = value));
+            console.log(formDataObj)
+            document.getElementById("todo--form").style.display="none";
+
+            
+            form.reset();
+            Model.saveTodos(new Todo(formDataObj.title, formDataObj.description, formDataObj.duedate,formDataObj.priority));
+            this.renderTodos();
+        });
     }
 }
 

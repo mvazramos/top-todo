@@ -1,7 +1,6 @@
 import App from "./app.js"
-import todoStorageAPI from "./todoStorageAPI.js"
-import Todo from "./todo.js"
+import Model from "./Model.js"
+import View from "./View.js"
 
 
-
-let app = new App()
+let app = new App(new Model(),new View())

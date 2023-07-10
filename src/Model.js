@@ -1,24 +1,23 @@
 // This class encapsulates all the CRUD operations with the localStorage
-import Todo from "./todo.js";
 import { nanoid } from "nanoid";
 
 // CRUD Operations 
 
-export default class todoStorageAPI{
-
+export default class Model{
     //Create or Update 
     static saveTodos(todo){
-            const todos = todoStorageAPI.getTodos();
+            const todos = Model.getTodos();
             const existingTodo = todos.find(td=> td.uuid ==todo.uuid)
            
              // if exists update
             if(existingTodo){
                 existingTodo.title = todo.title;
                 existingTodo.description =  todo.description;
-                existingTodo.dueDate = todo.dueDate;
+                existingTodo.duedate = todo.duedate;
                 existingTodo.priority =  todo.priority;
             } else{
             // if not exist create
+                
                 todo.uuid=nanoid();
 
                 todos.push(todo);
@@ -34,7 +33,7 @@ export default class todoStorageAPI{
 
     //Delete
     static deleteTodo(uuid){
-        const todos = todoStorageAPI.getTodos()
+        const todos = Model.getTodos()
         const newTodoList = todos.filter(td => td.uuid!=uuid)
 
         localStorage.setItem('todoapp-todos', JSON.stringify(newTodoList));

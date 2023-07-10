@@ -208,8 +208,8 @@ html,body{
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    order: -1;
-    /* overflow-y: auto; */
+    /* order: -1; */
+    overflow-y: auto;
     padding-bottom: 30px;
     width: 100%;
 }
@@ -276,15 +276,13 @@ html,body{
     display: flex;
     flex-direction: column;
     justify-content: start;
-    align-items: center;
-    padding-right: 40px;
-    padding-top: 2.5rem;
-    width: 40px;
+    align-items: end;
+    height: 100%;
 }
 
-.todos-add-button #add-todo{
-    position: sticky;
-}
+
+
+
 
 
 #todo--form{
